@@ -9,7 +9,9 @@ cask "jetty-pro" do
 
   livecheck do
     url "https://hypercritical.co/jetty-pro/updates/appcast.xml"
-    strategy :sparkle, &:short_version
+    strategy :sparkle do |items|
+      items.reject(&:channel).map(&:short_version).first
+    end
   end
 
   auto_updates true
