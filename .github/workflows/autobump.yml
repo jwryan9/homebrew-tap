@@ -38,11 +38,15 @@ jobs:
           HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
           HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
           TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_BROWSER: "true"
         run: |
           # `brew bump` always audits, and the audit fails on this cask: it needs
           # macOS `plutil` and objects to a pinned sha256 with an unversioned URL.
           version="$(brew livecheck --cask --json "$TAP_NAME/jetty-pro" |
             jq -r '.[0] | select(.version.outdated) | .version.latest')"
-          if [[ -n "$version" ]]; then
+          open_prs="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "jetty-pro $version in:title" --json number --jq length)"
+          if [[ -n "$version" && "$open_prs" == "0" ]]; then
             brew bump-cask-pr --no-audit --no-fork --version "$version" "$TAP_NAME/jetty-pro"
           fi
