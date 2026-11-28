@@ -1,6 +1,6 @@
 cask "jetty-pro" do
-  version "1.0.3"
-  sha256 "f8b0005d5b6611ccdb4a7437600a6e30aac25f859cda44bf671a511c60cb776b"
+  version "1.0.5"
+  sha256 "fb75dc132b0d3260c5510e7d019f297c75a0a18de2a620f42e9f8110afb85c3c"
 
   url "https://hypercritical.co/jetty-pro/downloads/Jetty%20Pro.zip"
   name "Jetty Pro"
